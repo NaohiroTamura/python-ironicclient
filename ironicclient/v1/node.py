@@ -266,8 +266,22 @@ class NodeManager(base.Manager):
         path = "%s/states/power" % node_id
         if state in ['on', 'off']:
             state = "power %s" % state
-        if state in ['reboot']:
+        elif state in ['reboot']:
             state = "rebooting"
+        elif state in ['soft_reboot']:
+            state = "rebooting soft"
+        elif state in ['soft_off']:
+            state = "power off soft"
+        elif state in ['inject_nmi']:
+            state = "inject nmi"
+        # cancel
+        elif state in ['cancel_soft_reboot']:
+            state = 'cancel rebooting soft'
+        elif state in ['cancel_soft_off']:
+            state = 'cancel power off soft'
+        elif state in ['cancel_inject_nmi']:
+            state = 'cancel inject nmi'
+
         target = {'target': state}
         return self._update(self._path(path), target, method='PUT')
 

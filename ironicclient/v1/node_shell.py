@@ -369,8 +369,10 @@ def do_node_set_maintenance(cc, args):
 @cliutils.arg(
     'power_state',
     metavar='<power-state>',
-    choices=['on', 'off', 'reboot'],
-    help="'on', 'off', or 'reboot'.")
+    choices=['on', 'off', 'reboot', 'soft_reboot', 'soft_off', 'inject_nmi',
+             'cancel_soft_reboot', 'cancel_soft_off', 'cancel_inject_nmi'],
+    help=("'on', 'off', 'reboot', 'soft_reboot', 'soft_off', 'inject_nmi',"
+          "'cancel_soft_reboot', 'cancel_soft_off', or 'cancel_inject_nmi'"))
 def do_node_set_power_state(cc, args):
     """Power a node on or off or reboot."""
     cc.node.set_power_state(args.node, args.power_state)
