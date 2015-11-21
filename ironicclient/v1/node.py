@@ -28,6 +28,7 @@ _power_states = {
     'on': 'power on',
     'off': 'power off',
     'reboot': 'rebooting',
+    'inject_nmi': 'inject_nmi',
 }
 
 
