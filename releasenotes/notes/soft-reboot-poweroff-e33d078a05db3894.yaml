@@ -1,0 +1,4 @@
+---
+features:
+  - Support new power states ``soft reboot`` and ``soft poweroff.
+    [Bug `1526226 <https://bugs.launchpad.net/ironic/+bug/1526226>`_]
