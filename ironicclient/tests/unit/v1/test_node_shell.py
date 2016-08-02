@@ -365,15 +365,18 @@ class NodeShellTest(utils.BaseTestCase):
                           n_shell.do_node_set_maintenance,
                           client_mock, args)
 
-    def _do_node_set_power_state_helper(self, power_state):
+    def _do_node_set_power_state_helper(self, power_state,
+                                        soft=False, timeout=None):
         client_mock = mock.MagicMock()
         args = mock.MagicMock()
         args.node = 'node_uuid'
         args.power_state = power_state
+        args.soft = soft
+        args.timeout = timeout
 
         n_shell.do_node_set_power_state(client_mock, args)
-        client_mock.node.set_power_state.assert_called_once_with('node_uuid',
-                                                                 power_state)
+        client_mock.node.set_power_state.assert_called_once_with(
+            'node_uuid', power_state, soft, timeout)
 
     def test_do_node_set_power_state_on(self):
         self._do_node_set_power_state_helper('on')
@@ -383,6 +386,33 @@ class NodeShellTest(utils.BaseTestCase):
 
     def test_do_node_set_power_state_reboot(self):
         self._do_node_set_power_state_helper('reboot')
+
+    def test_do_node_set_power_state_on_timeout(self):
+        self._do_node_set_power_state_helper('on', timeout=10)
+
+    def test_do_node_set_power_state_off_timeout(self):
+        self._do_node_set_power_state_helper('off', timeout=10)
+
+    def test_do_node_set_power_state_reboot_timeout(self):
+        self._do_node_set_power_state_helper('reboot', timeout=10)
+
+    def test_do_node_set_power_state_soft_on(self):
+        self._do_node_set_power_state_helper('on', soft=True)
+
+    def test_do_node_set_power_state_soft_of(self):
+        self._do_node_set_power_state_helper('off', soft=True)
+
+    def test_do_node_set_power_state_soft_reboot(self):
+        self._do_node_set_power_state_helper('reboot', soft=True)
+
+    def test_do_node_set_power_state_soft_on_timeout(self):
+        self._do_node_set_power_state_helper('on', soft=True, timeout=10)
+
+    def test_do_node_set_power_state_soft_off_timeout(self):
+        self._do_node_set_power_state_helper('off', soft=True, timeout=10)
+
+    def test_do_node_set_power_state_soft_reboot_timeout(self):
+        self._do_node_set_power_state_helper('reboot', soft=True, timeout=10)
 
     def test_do_node_set_target_raid_config_file(self):
         contents = '{"raid": "config"}'
