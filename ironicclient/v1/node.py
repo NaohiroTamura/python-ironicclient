@@ -29,7 +29,8 @@ _power_states = {
     'off': 'power off',
     'soft_off': 'soft power off',
     'reboot': 'rebooting',
-    'soft_reboot': 'soft rebooting',
+    'soft off': 'soft power off',
+    'soft reboot': 'soft rebooting',
 }
 
 
@@ -275,10 +276,20 @@ class NodeManager(base.CreateManager):
         else:
             return self.delete(path)
 
-    def set_power_state(self, node_id, state):
+    def set_power_state(self, node_id, state, soft=False, timeout=None):
         path = "%s/states/power" % node_id
-        target = {'target': _power_states.get(state, state)}
-        return self.update(path, target, http_method='PUT')
+
+        if soft:
+            target = _power_states.get('soft ' + state, state)
+        else:
+            target = _power_states.get(state, state)
+
+        if timeout:
+            body = {'target': target, 'timeout': timeout}
+        else:
+            body = {'target': target}
+
+        return self.update(path, body, http_method='PUT')
 
     def set_target_raid_config(self, node_ident, target_raid_config):
         """Sets target_raid_config for a node.
