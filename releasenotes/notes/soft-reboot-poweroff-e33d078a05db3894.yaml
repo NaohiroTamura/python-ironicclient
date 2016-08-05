@@ -1,4 +1,4 @@
 ---
 features:
-  - Support new power states ``soft reboot`` and ``soft poweroff.
-    [Bug `1526226 <https://bugs.launchpad.net/ironic/+bug/1526226>`_]
+  - Add optional arguments '--soft' and '--timeout' to the command
+    "node-set-power-state".

@@ -54,10 +54,10 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
         """Test steps:
 
         1) create node
-        2) set node power state to 'soft_off'
+        2) set node power state to 'off' with '--soft' option
         3) check node power state has been set to 'off'
         """
-        self.set_node_power_state(self.node['uuid'], 'soft_off')
+        self.set_node_power_state(self.node['uuid'], 'off', '--soft')
         node_state = self.show_node_states(self.node['uuid'])
         self.assertEqual('power off', node_state['power_state'])
 
@@ -105,7 +105,7 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
         1) create node
         2) set node power state to 'off'
         3) check node power state has been set to 'off'
-        4) set node power state to 'soft_reboot'
+        4) set node power state to 'reboot' with '--soft' option
         5) check node power state has been set to 'on'
         """
         self.set_node_power_state(self.node['uuid'], 'off')
@@ -113,7 +113,7 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
 
         self.assertEqual('power off', node_state['power_state'])
 
-        self.set_node_power_state(self.node['uuid'], 'soft_reboot')
+        self.set_node_power_state(self.node['uuid'], 'reboot', '--soft')
         node_state = self.show_node_states(self.node['uuid'])
 
         self.assertEqual('power on', node_state['power_state'])
@@ -124,7 +124,7 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
         1) create node
         2) set node power state to 'on'
         3) check node power state has been set to 'on'
-        4) set node power state to 'soft_reboot'
+        4) set node power state to 'reboot' with '--soft' option
         5) check node power state has been set to 'on'
         """
         self.set_node_power_state(self.node['uuid'], 'on')
@@ -132,7 +132,7 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
 
         self.assertEqual('power on', node_state['power_state'])
 
-        self.set_node_power_state(self.node['uuid'], 'soft_reboot')
+        self.set_node_power_state(self.node['uuid'], 'reboot', '--soft')
         node_state = self.show_node_states(self.node['uuid'])
 
         self.assertEqual('power on', node_state['power_state'])
