@@ -410,7 +410,7 @@ class NodeShellTest(utils.BaseTestCase):
     def test_do_node_set_power_state_soft_on(self):
         self._do_node_set_power_state_helper('on', soft=True)
 
-    def test_do_node_set_power_state_soft_of(self):
+    def test_do_node_set_power_state_soft_off(self):
         self._do_node_set_power_state_helper('off', soft=True)
 
     def test_do_node_set_power_state_soft_reboot(self):

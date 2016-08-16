@@ -27,7 +27,6 @@ from ironicclient import exc
 _power_states = {
     'on': 'power on',
     'off': 'power off',
-    'soft_off': 'soft power off',
     'reboot': 'rebooting',
     'soft off': 'soft power off',
     'soft reboot': 'soft rebooting',
