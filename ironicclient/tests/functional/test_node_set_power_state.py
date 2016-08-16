@@ -39,6 +39,19 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
         node_state = self.show_node_states(self.node['uuid'])
         self.assertEqual('power on', node_state['power_state'])
 
+    def test_node_set_power_state_on_timeout(self):
+        self.skipTest("Ironic API server code hasn't been merged")
+        """Test steps:
+
+        1) create node
+        2) set node power state to 'on' with '--timeout' option
+        3) check node power state has been set to 'on'
+        """
+        self.set_node_power_state(self.node['uuid'], 'on',
+                                  params='--timeout 60')
+        node_state = self.show_node_states(self.node['uuid'])
+        self.assertEqual('power on', node_state['power_state'])
+
     def test_node_set_power_state_off(self):
         """Test steps:
 
@@ -50,6 +63,19 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
         node_state = self.show_node_states(self.node['uuid'])
         self.assertEqual('power off', node_state['power_state'])
 
+    def test_node_set_power_state_off_timeout(self):
+        self.skipTest("Ironic API server code hasn't been merged")
+        """Test steps:
+
+        1) create node
+        2) set node power state to 'off' with '--timeout' option
+        3) check node power state has been set to 'off'
+        """
+        self.set_node_power_state(self.node['uuid'], 'off',
+                                  params='--timeout 60')
+        node_state = self.show_node_states(self.node['uuid'])
+        self.assertEqual('power off', node_state['power_state'])
+
     def test_node_set_power_state_soft_off(self):
         """Test steps:
 
@@ -57,7 +83,20 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
         2) set node power state to 'off' with '--soft' option
         3) check node power state has been set to 'off'
         """
-        self.set_node_power_state(self.node['uuid'], 'off', '--soft')
+        self.set_node_power_state(self.node['uuid'], 'off', params='--soft')
+        node_state = self.show_node_states(self.node['uuid'])
+        self.assertEqual('power off', node_state['power_state'])
+
+    def test_node_set_power_state_soft_off_timeout(self):
+        self.skipTest("Ironic API server code hasn't been merged")
+        """Test steps:
+
+        1) create node
+        2) set node power state to 'off' with '--soft' and '--timeout' options
+        3) check node power state has been set to 'off'
+        """
+        self.set_node_power_state(self.node['uuid'], 'off',
+                                  params='--soft --timeout 60')
         node_state = self.show_node_states(self.node['uuid'])
         self.assertEqual('power off', node_state['power_state'])
 
@@ -76,6 +115,27 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
         self.assertEqual('power off', node_state['power_state'])
 
         self.set_node_power_state(self.node['uuid'], 'reboot')
+        node_state = self.show_node_states(self.node['uuid'])
+
+        self.assertEqual('power on', node_state['power_state'])
+
+    def test_node_set_power_state_reboot_node_off_timeout(self):
+        self.skipTest("Ironic API server code hasn't been merged")
+        """Test steps:
+
+        1) create node
+        2) set node power state to 'off'
+        3) check node power state has been set to 'off'
+        4) set node power state to 'reboot' with '--timeout' option
+        5) check node power state has been set to 'on'
+        """
+        self.set_node_power_state(self.node['uuid'], 'off')
+        node_state = self.show_node_states(self.node['uuid'])
+
+        self.assertEqual('power off', node_state['power_state'])
+
+        self.set_node_power_state(self.node['uuid'], 'reboot',
+                                  params='--timeout 60')
         node_state = self.show_node_states(self.node['uuid'])
 
         self.assertEqual('power on', node_state['power_state'])
@@ -99,7 +159,29 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
 
         self.assertEqual('power on', node_state['power_state'])
 
+    def test_node_set_power_state_reboot_node_on_timeout(self):
+        self.skipTest("Ironic API server code hasn't been merged")
+        """Test steps:
+
+        1) create node
+        2) set node power state to 'on'
+        3) check node power state has been set to 'on'
+        4) set node power state to 'reboot' with '--timeout' option
+        5) check node power state has been set to 'on'
+        """
+        self.set_node_power_state(self.node['uuid'], 'on')
+        node_state = self.show_node_states(self.node['uuid'])
+
+        self.assertEqual('power on', node_state['power_state'])
+
+        self.set_node_power_state(self.node['uuid'], 'reboot',
+                                  params='--timeout 60')
+        node_state = self.show_node_states(self.node['uuid'])
+
+        self.assertEqual('power on', node_state['power_state'])
+
     def test_node_set_power_state_soft_reboot_node_off(self):
+        self.skipTest("Ironic API server code hasn't been merged")
         """Test steps:
 
         1) create node
@@ -113,12 +195,34 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
 
         self.assertEqual('power off', node_state['power_state'])
 
-        self.set_node_power_state(self.node['uuid'], 'reboot', '--soft')
+        self.set_node_power_state(self.node['uuid'], 'reboot', params='--soft')
+        node_state = self.show_node_states(self.node['uuid'])
+
+        self.assertEqual('power on', node_state['power_state'])
+
+    def test_node_set_power_state_soft_reboot_node_off_timeout(self):
+        """Test steps:
+
+        1) create node
+        2) set node power state to 'off'
+        3) check node power state has been set to 'off'
+        4) set node power state to 'reboot' with '--soft' and '--timeout'
+           options
+        5) check node power state has been set to 'on'
+        """
+        self.set_node_power_state(self.node['uuid'], 'off')
+        node_state = self.show_node_states(self.node['uuid'])
+
+        self.assertEqual('power off', node_state['power_state'])
+
+        self.set_node_power_state(self.node['uuid'], 'reboot',
+                                  params='--soft --timeout 60')
         node_state = self.show_node_states(self.node['uuid'])
 
         self.assertEqual('power on', node_state['power_state'])
 
     def test_node_set_power_state_soft_reboot_node_on(self):
+        self.skipTest("Ironic API server code hasn't been merged")
         """Test steps:
 
         1) create node
@@ -132,7 +236,29 @@ class NodeSetPowerStateTestIronicClient(base.FunctionalTestBase):
 
         self.assertEqual('power on', node_state['power_state'])
 
-        self.set_node_power_state(self.node['uuid'], 'reboot', '--soft')
+        self.set_node_power_state(self.node['uuid'], 'reboot', params='--soft')
+        node_state = self.show_node_states(self.node['uuid'])
+
+        self.assertEqual('power on', node_state['power_state'])
+
+    def test_node_set_power_state_soft_reboot_node_on_timeout(self):
+        self.skipTest("Ironic API server code hasn't been merged")
+        """Test steps:
+
+        1) create node
+        2) set node power state to 'on'
+        3) check node power state has been set to 'on'
+        4) set node power state to 'reboot' with '--soft' and '--timeout'
+           options
+        5) check node power state has been set to 'on'
+        """
+        self.set_node_power_state(self.node['uuid'], 'on')
+        node_state = self.show_node_states(self.node['uuid'])
+
+        self.assertEqual('power on', node_state['power_state'])
+
+        self.set_node_power_state(self.node['uuid'], 'reboot',
+                                  params='--soft --timeout 60')
         node_state = self.show_node_states(self.node['uuid'])
 
         self.assertEqual('power on', node_state['power_state'])
