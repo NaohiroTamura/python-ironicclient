@@ -416,14 +416,14 @@ def do_node_set_maintenance(cc, args):
     default=False,
     help="power graceful off/reboot.")
 @cliutils.arg(
-    '--timeout',
-    metavar='<timeout>',
+    '--power-timeout',
+    metavar='<power-timeout>',
     default=None,
     help="Timeout positive integer value(> 0) for any 'power-state'.")
 def do_node_set_power_state(cc, args):
     """Power a node on or off or reboot."""
     cc.node.set_power_state(args.node, args.power_state, args.soft,
-                            args.timeout)
+                            timeout=args.power_timeout)
 
 
 @cliutils.arg('node', metavar='<node>', help="Name or UUID of the node.")

@@ -383,11 +383,11 @@ class NodeShellTest(utils.BaseTestCase):
         args.node = 'node_uuid'
         args.power_state = power_state
         args.soft = soft
-        args.timeout = timeout
+        args.power_timeout = timeout
 
         n_shell.do_node_set_power_state(client_mock, args)
         client_mock.node.set_power_state.assert_called_once_with(
-            'node_uuid', power_state, soft, timeout)
+            'node_uuid', power_state, soft, timeout=timeout)
 
     def test_do_node_set_power_state_on(self):
         self._do_node_set_power_state_helper('on')
