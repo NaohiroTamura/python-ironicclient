@@ -587,6 +587,19 @@ class MaintenanceUnsetBaremetalNode(command.Command):
             metavar='<node>',
             help="Name or UUID of the node."
         )
+        parser.add_argument(
+            '--soft',
+            dest='soft',
+            action='store_true',
+            default=False,
+            help="power graceful off/reboot."
+        )
+        parser.add_argument(
+            '--power-timeout',
+            metavar='<power-timeout>',
+            default=None,
+            help="Timeout positive integer value(> 0) for any 'power-state'."
+        )
         return parser
 
     def take_action(self, parsed_args):
@@ -721,8 +734,13 @@ class PowerBaremetalNode(command.Command):
 
         baremetal_client = self.app.client_manager.baremetal
 
+        if parsed_args.power_timeout is not None:
+            timeout = int(parsed_args.power_timeout)
+        else:
+            timeout = parsed_args.power_timeout
         baremetal_client.node.set_power_state(
-            parsed_args.node, parsed_args.power_state)
+            parsed_args.node, parsed_args.power_state, parsed_args.soft,
+            timeout=timeout)
 
 
 class ProvideBaremetalNode(ProvisionStateBaremetalNode):
@@ -743,7 +761,21 @@ class RebootBaremetalNode(command.Command):
         parser.add_argument(
             'node',
             metavar='<node>',
-            help="Name or UUID of the node.")
+            help="Name or UUID of the node."
+        )
+        parser.add_argument(
+            '--soft',
+            dest='soft',
+            action='store_true',
+            default=False,
+            help="power graceful off/reboot."
+        )
+        parser.add_argument(
+            '--power-timeout',
+            metavar='<power-timeout>',
+            default=None,
+            help="Timeout positive integer value(> 0) for any 'power-state'."
+        )
 
         return parser
 
@@ -752,8 +784,12 @@ class RebootBaremetalNode(command.Command):
 
         baremetal_client = self.app.client_manager.baremetal
 
+        if parsed_args.power_timeout is not None:
+            timeout = int(parsed_args.power_timeout)
+        else:
+            timeout = parsed_args.power_timeout
         baremetal_client.node.set_power_state(
-            parsed_args.node, 'reboot')
+            parsed_args.node, 'reboot', parsed_args.soft, timeout=timeout)
 
 
 class RebuildBaremetalNode(ProvisionStateBaremetalNode):
