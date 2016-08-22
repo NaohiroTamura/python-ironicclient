@@ -734,10 +734,10 @@ class PowerBaremetalNode(command.Command):
 
         baremetal_client = self.app.client_manager.baremetal
 
+        timeout = None
         if parsed_args.power_timeout is not None:
             timeout = int(parsed_args.power_timeout)
-        else:
-            timeout = parsed_args.power_timeout
+
         baremetal_client.node.set_power_state(
             parsed_args.node, parsed_args.power_state, parsed_args.soft,
             timeout=timeout)
@@ -774,7 +774,7 @@ class RebootBaremetalNode(command.Command):
             '--power-timeout',
             metavar='<power-timeout>',
             default=None,
-            help="Timeout positive integer value(> 0) for any 'power-state'."
+            help="Timeout positive integer value(> 0) for 'reboot'."
         )
 
         return parser
@@ -784,10 +784,10 @@ class RebootBaremetalNode(command.Command):
 
         baremetal_client = self.app.client_manager.baremetal
 
+        timeout = None
         if parsed_args.power_timeout is not None:
             timeout = int(parsed_args.power_timeout)
-        else:
-            timeout = parsed_args.power_timeout
+
         baremetal_client.node.set_power_state(
             parsed_args.node, 'reboot', parsed_args.soft, timeout=timeout)
 
