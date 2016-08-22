@@ -1807,6 +1807,7 @@ class TestVifDetach(TestBaremetal):
         arglist = ['node_uuid', 'aaa-aaa']
         verifylist = [('node', 'node_uuid'),
                       ('vif_id', 'aaa-aaa')]
+
         parsed_args = self.check_parser(self.cmd, arglist, verifylist)
 
         self.cmd.take_action(parsed_args)

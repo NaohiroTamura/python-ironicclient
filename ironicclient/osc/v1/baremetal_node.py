@@ -1232,13 +1232,13 @@ class VifDetachBaremetalNode(command.Command):
         baremetal_client.node.vif_detach(parsed_args.node, parsed_args.vif_id)
 
 
-class InjectNmiBaremetalNode(command.Command):
+class InjectBaremetalNode(command.Command):
     """Inject NMI to baremetal node"""
 
-    log = logging.getLogger(__name__ + ".InjectNmiBaremetalNode")
+    log = logging.getLogger(__name__ + ".InjectBaremetalNode")
 
     def get_parser(self, prog_name):
-        parser = super(InjectNmiBaremetalNode, self).get_parser(prog_name)
+        parser = super(InjectBaremetalNode, self).get_parser(prog_name)
 
         parser.add_argument(
             'nmi',
@@ -1259,4 +1259,4 @@ class InjectNmiBaremetalNode(command.Command):
 
         baremetal_client = self.app.client_manager.baremetal
 
-        baremetal_client.node.inject_nmi(parsed_args.node)
+        baremetal_client.node.inject_nmi(parsed_args.nmi, parsed_args.node)

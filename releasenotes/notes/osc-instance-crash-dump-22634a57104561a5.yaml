@@ -1,4 +1,3 @@
 ---
 features:
-  - Add a new OSC command for Inject NMI:
-    * openstack baremetal node inject nmi
+  - Add a new OSC command for Inject NMI, "openstack baremetal node inject nmi".
