@@ -592,13 +592,13 @@ class MaintenanceUnsetBaremetalNode(command.Command):
             dest='soft',
             action='store_true',
             default=False,
-            help="power graceful off/reboot."
+            help=_("Power graceful off.")
         )
         parser.add_argument(
             '--power-timeout',
             metavar='<power-timeout>',
             default=None,
-            help="Timeout positive integer value(> 0) for any 'power-state'."
+            help=_("Timeout positive integer value(> 0) for 'on' or 'off'.")
         )
         return parser
 
@@ -768,13 +768,13 @@ class RebootBaremetalNode(command.Command):
             dest='soft',
             action='store_true',
             default=False,
-            help="power graceful off/reboot."
+            help=_("Graceful reboot.")
         )
         parser.add_argument(
             '--power-timeout',
             metavar='<power-timeout>',
             default=None,
-            help="Timeout positive integer value(> 0) for 'reboot'."
+            help=_("Timeout positive integer value(> 0) for 'reboot'.")
         )
 
         return parser
