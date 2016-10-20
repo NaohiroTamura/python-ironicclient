@@ -909,7 +909,7 @@ class TestBaremetalPower(TestBaremetal):
         verifylist = [('power_state', 'on'),
                       ('node', 'node_uuid'),
                       ('soft', False),
-                      ('power_timeout', '2')]
+                      ('power_timeout', 2)]
 
         parsed_args = self.check_parser(self.cmd, arglist, verifylist)
 
@@ -937,7 +937,7 @@ class TestBaremetalPower(TestBaremetal):
         verifylist = [('power_state', 'off'),
                       ('node', 'node_uuid'),
                       ('soft', False),
-                      ('power_timeout', '2')]
+                      ('power_timeout', 2)]
 
         parsed_args = self.check_parser(self.cmd, arglist, verifylist)
 
@@ -965,7 +965,7 @@ class TestBaremetalPower(TestBaremetal):
         verifylist = [('power_state', 'off'),
                       ('node', 'node_uuid'),
                       ('soft', True),
-                      ('power_timeout', '2')]
+                      ('power_timeout', 2)]
 
         parsed_args = self.check_parser(self.cmd, arglist, verifylist)
 
@@ -1044,7 +1044,7 @@ class TestBaremetalReboot(TestBaremetal):
         arglist = ['node_uuid', '--power-timeout', '2']
         verifylist = [('node', 'node_uuid'),
                       ('soft', False),
-                      ('power_timeout', '2')]
+                      ('power_timeout', 2)]
 
         parsed_args = self.check_parser(self.cmd, arglist, verifylist)
 
@@ -1070,7 +1070,7 @@ class TestBaremetalReboot(TestBaremetal):
         arglist = ['node_uuid', '--soft', '--power-timeout', '2']
         verifylist = [('node', 'node_uuid'),
                       ('soft', True),
-                      ('power_timeout', '2')]
+                      ('power_timeout', 2)]
 
         parsed_args = self.check_parser(self.cmd, arglist, verifylist)
 
