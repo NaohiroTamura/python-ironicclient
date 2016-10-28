@@ -726,7 +726,8 @@ class PowerBaremetalNode(command.Command):
             metavar='<power-timeout>',
             default=None,
             type=int,
-            help=_("Timeout positive integer value(> 0) for 'on' or 'off'.")
+            help=_("Timeout (in seconds) positive integer value (> 0) for "
+                   "'on' or 'off'.")
         )
         return parser
 
@@ -772,7 +773,8 @@ class RebootBaremetalNode(command.Command):
             metavar='<power-timeout>',
             default=None,
             type=int,
-            help=_("Timeout positive integer value(> 0) for 'reboot'.")
+            help=_("Timeout (in seconds) positive integer value(> 0) for "
+                   "'reboot'.")
         )
 
         return parser
