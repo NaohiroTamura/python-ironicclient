@@ -377,7 +377,7 @@ class NodeShellTest(utils.BaseTestCase):
                           client_mock, args)
 
     def _do_node_set_power_state_helper(self, power_state,
-                                        soft=False, timeout=None):
+                                        soft=False, timeout=None, error=False):
         client_mock = mock.MagicMock()
         args = mock.MagicMock()
         args.node = 'node_uuid'
@@ -385,9 +385,15 @@ class NodeShellTest(utils.BaseTestCase):
         args.soft = soft
         args.power_timeout = timeout
 
-        n_shell.do_node_set_power_state(client_mock, args)
-        client_mock.node.set_power_state.assert_called_once_with(
-            'node_uuid', power_state, soft, timeout=timeout)
+        if error:
+            self.assertRaises(exceptions.CommandError,
+                              n_shell.do_node_set_power_state,
+                              client_mock, args)
+            self.assertFalse(client_mock.node.set_power_state.called)
+        else:
+            n_shell.do_node_set_power_state(client_mock, args)
+            client_mock.node.set_power_state.assert_called_once_with(
+                'node_uuid', power_state, soft, timeout=timeout)
 
     def test_do_node_set_power_state_on(self):
         self._do_node_set_power_state_helper('on')
@@ -408,7 +414,7 @@ class NodeShellTest(utils.BaseTestCase):
         self._do_node_set_power_state_helper('reboot', timeout=10)
 
     def test_do_node_set_power_state_soft_on(self):
-        self._do_node_set_power_state_helper('on', soft=True)
+        self._do_node_set_power_state_helper('on', soft=True, error=True)
 
     def test_do_node_set_power_state_soft_off(self):
         self._do_node_set_power_state_helper('off', soft=True)
@@ -417,7 +423,8 @@ class NodeShellTest(utils.BaseTestCase):
         self._do_node_set_power_state_helper('reboot', soft=True)
 
     def test_do_node_set_power_state_soft_on_timeout(self):
-        self._do_node_set_power_state_helper('on', soft=True, timeout=10)
+        self._do_node_set_power_state_helper('on', soft=True, timeout=10,
+                                             error=True)
 
     def test_do_node_set_power_state_soft_off_timeout(self):
         self._do_node_set_power_state_helper('off', soft=True, timeout=10)
