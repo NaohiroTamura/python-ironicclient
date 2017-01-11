@@ -918,6 +918,19 @@ class TestBaremetalPower(TestBaremetal):
         self.baremetal_mock.node.set_power_state.assert_called_once_with(
             'node_uuid', 'on', False, timeout=2)
 
+    def test_baremetal_soft_power_on(self):
+        arglist = ['on', 'node_uuid', '--soft']
+        verifylist = [('power_state', 'on'),
+                      ('node', 'node_uuid'),
+                      ('soft', True),
+                      ('power_timeout', None)]
+
+        parsed_args = self.check_parser(self.cmd, arglist, verifylist)
+
+        self.assertRaises(exc.CommandError,
+                          self.cmd.take_action,
+                          parsed_args)
+
     def test_baremetal_power_off(self):
         arglist = ['off', 'node_uuid']
         verifylist = [('power_state', 'off'),
