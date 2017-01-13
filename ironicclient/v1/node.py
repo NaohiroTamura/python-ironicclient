@@ -276,6 +276,19 @@ class NodeManager(base.CreateManager):
             return self.delete(path)
 
     def set_power_state(self, node_id, state, soft=False, timeout=None):
+        """Sets power state for a node.
+
+        :param node_id: Node identifier
+        :param state: One of target power state, 'on', 'off', or 'reboot'
+        :param soft: The flag for graceful power 'off' or 'reboot'
+        :param timeout: The timeout (in seconds) positive integer value (> 0)
+        :raises: CommandError if 'soft' or 'timeout' option is invalid
+        :returns: The status of the request
+        """
+        if state == 'on' and soft:
+            raise exc.CommandError(
+                _("'--soft' option is invalid for the power-state 'on'"))
+
         path = "%s/states/power" % node_id
 
         if soft:
@@ -283,10 +296,14 @@ class NodeManager(base.CreateManager):
         else:
             target = _power_states.get(state, state)
 
-        if timeout:
-            body = {'target': target, 'timeout': timeout}
-        else:
-            body = {'target': target}
+        body = {'target': target}
+        if timeout is not None:
+            if isinstance(timeout, int) and int(timeout) > 0:
+                body = {'target': target, 'timeout': timeout}
+            else:
+                raise exc.CommandError(
+                    _("'--timeout' option must have positive integer "
+                      "value (> 0)"))
 
         return self.update(path, body, http_method='PUT')
 

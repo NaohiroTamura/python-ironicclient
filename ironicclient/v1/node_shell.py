@@ -423,10 +423,6 @@ def do_node_set_maintenance(cc, args):
           "any 'power-state'."))
 def do_node_set_power_state(cc, args):
     """Power a node on or off or reboot."""
-    if args.power_state == 'on' and args.soft:
-        raise exc.CommandError(
-            _("'--soft' option is invalid for the power-state 'on'"))
-
     cc.node.set_power_state(args.node, args.power_state, args.soft,
                             timeout=args.power_timeout)
 
