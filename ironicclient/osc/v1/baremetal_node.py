@@ -734,15 +734,14 @@ class PowerBaremetalNode(command.Command):
     def take_action(self, parsed_args):
         self.log.debug("take_action(%s)", parsed_args)
 
-        if parsed_args.power_state == 'on' and parsed_args.soft:
-            raise exc.CommandError(
-                _("'--soft' option is invalid for the power-state 'on'"))
-
         baremetal_client = self.app.client_manager.baremetal
 
-        baremetal_client.node.set_power_state(
-            parsed_args.node, parsed_args.power_state, parsed_args.soft,
-            timeout=parsed_args.power_timeout)
+        try:
+            baremetal_client.node.set_power_state(
+                parsed_args.node, parsed_args.power_state, parsed_args.soft,
+                timeout=parsed_args.power_timeout)
+        except exc.InvalidArgument as e:
+            raise exc.CommandError(e)
 
 
 class ProvideBaremetalNode(ProvisionStateBaremetalNode):
@@ -788,9 +787,12 @@ class RebootBaremetalNode(command.Command):
 
         baremetal_client = self.app.client_manager.baremetal
 
-        baremetal_client.node.set_power_state(
-            parsed_args.node, 'reboot', parsed_args.soft,
-            timeout=parsed_args.power_timeout)
+        try:
+            baremetal_client.node.set_power_state(
+                parsed_args.node, 'reboot', parsed_args.soft,
+                timeout=parsed_args.power_timeout)
+        except exc.InvalidArgument as e:
+            raise exc.CommandError(e)
 
 
 class RebuildBaremetalNode(ProvisionStateBaremetalNode):
