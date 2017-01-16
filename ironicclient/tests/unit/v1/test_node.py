@@ -918,17 +918,17 @@ class NodeManagerTest(testtools.TestCase):
         self.assertEqual('power off', power_state.target_power_state)
 
     def test_node_set_power_state_soft_fail(self):
-        self.assertRaises(exc.CommandError,
+        self.assertRaises(exc.InvalidArgument,
                           self.mgr.set_power_state,
                           NODE1['uuid'], 'on', soft=True)
 
     def test_node_set_power_state_on_timeout_fail(self):
-        self.assertRaises(exc.CommandError,
+        self.assertRaises(exc.InvalidArgument,
                           self.mgr.set_power_state,
                           NODE1['uuid'], 'off', soft=False, timeout=0)
 
     def test_node_set_power_state_on_timeout_type_error(self):
-        self.assertRaises(exc.CommandError,
+        self.assertRaises(exc.InvalidArgument,
                           self.mgr.set_power_state,
                           NODE1['uuid'], 'off', soft=False, timeout='a')
 

@@ -286,7 +286,7 @@ class NodeManager(base.CreateManager):
         :returns: The status of the request
         """
         if state == 'on' and soft:
-            raise exc.CommandError(
+            raise exc.InvalidArgument(
                 _("'--soft' option is invalid for the power-state 'on'"))
 
         path = "%s/states/power" % node_id
@@ -301,7 +301,7 @@ class NodeManager(base.CreateManager):
             if isinstance(timeout, int) and int(timeout) > 0:
                 body = {'target': target, 'timeout': timeout}
             else:
-                raise exc.CommandError(
+                raise exc.InvalidArgument(
                     _("'--timeout' option must have positive integer "
                       "value (> 0)"))
 
