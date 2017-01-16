@@ -302,8 +302,8 @@ class NodeManager(base.CreateManager):
                 body = {'target': target, 'timeout': timeout}
             else:
                 raise exc.InvalidArgument(
-                    _("'--timeout' option must have positive integer "
-                      "value (> 0)"))
+                    _("'--power-timeout' option must have positive "
+                      "integer value (> 0)"))
 
         return self.update(path, body, http_method='PUT')
 
