@@ -414,7 +414,8 @@ def do_node_set_maintenance(cc, args):
     dest='soft',
     action='store_true',
     default=False,
-    help="power graceful off/reboot.")
+    help=("Gracefully change the power state. Only valid for 'off' and "
+          "'reboot' power states."))
 @cliutils.arg(
     '--power-timeout',
     metavar='<power-timeout>',

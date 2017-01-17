@@ -908,6 +908,16 @@ class NodeManagerTest(testtools.TestCase):
         self.assertEqual(expect, self.api.calls)
         self.assertEqual('power off', power_state.target_power_state)
 
+    def test_node_set_power_timeout_str(self):
+        power_state = self.mgr.set_power_state(NODE1['uuid'], "off",
+                                               timeout="2")
+        body = {'target': 'power off', 'timeout': 2}
+        expect = [
+            ('PUT', '/v1/nodes/%s/states/power' % NODE1['uuid'], {}, body),
+        ]
+        self.assertEqual(expect, self.api.calls)
+        self.assertEqual('power off', power_state.target_power_state)
+
     def test_node_set_power_state_soft(self):
         power_state = self.mgr.set_power_state(NODE1['uuid'], "off", soft=True)
         body = {'target': 'soft power off'}
