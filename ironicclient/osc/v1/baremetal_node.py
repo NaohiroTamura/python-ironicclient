@@ -719,15 +719,15 @@ class PowerBaremetalNode(command.Command):
             dest='soft',
             action='store_true',
             default=False,
-            help=_("Power graceful off.")
+            help=_("Request graceful power-off.")
         )
         parser.add_argument(
             '--power-timeout',
             metavar='<power-timeout>',
             default=None,
             type=int,
-            help=_("Timeout (in seconds) positive integer value (> 0) for "
-                   "'on' or 'off'.")
+            help=_("Timeout (in seconds, positive integer) to wait for the "
+                   "target power state before erroring out.")
         )
         return parser
 
@@ -736,12 +736,9 @@ class PowerBaremetalNode(command.Command):
 
         baremetal_client = self.app.client_manager.baremetal
 
-        try:
-            baremetal_client.node.set_power_state(
-                parsed_args.node, parsed_args.power_state, parsed_args.soft,
-                timeout=parsed_args.power_timeout)
-        except exc.InvalidArgument as e:
-            raise exc.CommandError(e)
+        baremetal_client.node.set_power_state(
+            parsed_args.node, parsed_args.power_state, parsed_args.soft,
+            timeout=parsed_args.power_timeout)
 
 
 class ProvideBaremetalNode(ProvisionStateBaremetalNode):
@@ -769,15 +766,15 @@ class RebootBaremetalNode(command.Command):
             dest='soft',
             action='store_true',
             default=False,
-            help=_("Graceful reboot.")
+            help=_("Request Graceful reboot.")
         )
         parser.add_argument(
             '--power-timeout',
             metavar='<power-timeout>',
             default=None,
             type=int,
-            help=_("Timeout (in seconds) positive integer value(> 0) for "
-                   "'reboot'.")
+            help=_("Timeout (in seconds, positive integer) to wait for the "
+                   "target power state before erroring out.")
         )
 
         return parser
@@ -787,12 +784,9 @@ class RebootBaremetalNode(command.Command):
 
         baremetal_client = self.app.client_manager.baremetal
 
-        try:
-            baremetal_client.node.set_power_state(
-                parsed_args.node, 'reboot', parsed_args.soft,
-                timeout=parsed_args.power_timeout)
-        except exc.InvalidArgument as e:
-            raise exc.CommandError(e)
+        baremetal_client.node.set_power_state(
+            parsed_args.node, 'reboot', parsed_args.soft,
+            timeout=parsed_args.power_timeout)
 
 
 class RebuildBaremetalNode(ProvisionStateBaremetalNode):
