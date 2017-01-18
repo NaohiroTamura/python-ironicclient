@@ -36,10 +36,6 @@ class InvalidAttribute(ClientException):
     pass
 
 
-class InvalidArgument(ClientException):
-    """Found invalid argument."""
-
-
 class StateTransitionFailed(ClientException):
     """Failed to reach a requested provision state."""
 

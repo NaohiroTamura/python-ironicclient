@@ -419,16 +419,17 @@ def do_node_set_maintenance(cc, args):
 @cliutils.arg(
     '--power-timeout',
     metavar='<power-timeout>',
+    type=int,
     default=None,
-    help=("Timeout (in seconds) positive integer value (> 0) for "
-          "any 'power-state'."))
+    help=("Timeout (in seconds, positive integer) to wait for the target "
+          "power state before erroring out."))
 def do_node_set_power_state(cc, args):
     """Power a node on or off or reboot."""
     try:
         cc.node.set_power_state(args.node, args.power_state, args.soft,
                                 timeout=args.power_timeout)
-    except exc.InvalidArgument as e:
-        raise exc.CommandError(e)
+    except ValueError as e:
+        raise exc.CommandError(str(e))
 
 
 @cliutils.arg('node', metavar='<node>', help="Name or UUID of the node.")

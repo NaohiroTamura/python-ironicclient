@@ -282,19 +282,17 @@ class NodeManager(base.CreateManager):
         :param state: One of target power state, 'on', 'off', or 'reboot'
         :param soft: The flag for graceful power 'off' or 'reboot'
         :param timeout: The timeout (in seconds) positive integer value (> 0)
-        :raises: InvalidArgument if 'soft' or 'timeout' option is invalid
+        :raises: ValueError if 'soft' or 'timeout' option is invalid
         :returns: The status of the request
         """
         if state == 'on' and soft:
-            raise exc.InvalidArgument(
+            raise ValueError(
                 _("'soft' option is invalid for the power-state 'on'"))
 
         path = "%s/states/power" % node_id
 
-        if soft:
-            target = _power_states.get('soft ' + state, state)
-        else:
-            target = _power_states.get(state, state)
+        requested_state = 'soft ' + state if soft else state
+        target = _power_states.get(requested_state, state)
 
         body = {'target': target}
         if timeout is not None:
@@ -302,13 +300,12 @@ class NodeManager(base.CreateManager):
                     "positive integer value (> 0)")
             try:
                 timeout = int(timeout)
-            except ValueError:
-                raise exc.InvalidArgument(msg)
+            except (ValueError, TypeError):
+                raise ValueError(msg)
 
-            if int(timeout) > 0:
-                body = {'target': target, 'timeout': timeout}
-            else:
-                raise exc.InvalidArgument(msg)
+            if timeout <= 0:
+                raise ValueError(msg)
+            body = {'target': target, 'timeout': timeout}
 
         return self.update(path, body, http_method='PUT')
 

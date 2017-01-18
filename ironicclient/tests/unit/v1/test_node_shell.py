@@ -388,8 +388,7 @@ class NodeShellTest(utils.BaseTestCase):
         if error:
             client_mock.node = mock.MagicMock()
             client_mock.node.set_power_state = mock.MagicMock()
-            client_mock.node.set_power_state.side_effect = (
-                exc.InvalidArgument("fake"))
+            client_mock.node.set_power_state.side_effect = ValueError("fake")
             self.assertRaises(exc.CommandError,
                               n_shell.do_node_set_power_state,
                               client_mock, args)
