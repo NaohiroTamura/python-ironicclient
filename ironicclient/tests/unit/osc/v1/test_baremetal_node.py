@@ -1821,7 +1821,7 @@ class TestBaremetalInject(TestBaremetal):
         super(TestBaremetalInject, self).setUp()
 
         # Get the command object to test
-        self.cmd = baremetal_node.InjectBaremetalNode(self.app, None)
+        self.cmd = baremetal_node.InjectNmiBaremetalNode(self.app, None)
 
     def test_baremetal_inject_no_options(self):
         arglist = []
@@ -1831,29 +1831,13 @@ class TestBaremetalInject(TestBaremetal):
                           self.check_parser,
                           self.cmd, arglist, verifylist)
 
-    def test_baremetal_inject_uuid_only(self):
-        arglist = ['node_uuid']
-        verifylist = [('nmi', 'nmi'), ('node', 'node_uuid')]
-
-        self.assertRaises(oscutils.ParserException,
-                          self.check_parser,
-                          self.cmd, arglist, verifylist)
-
-    def test_baremetal_inject_unknown_first_arg(self):
-        arglist = ['unknown', 'node_uuid']
-        verifylist = [('nmi', 'nmi'), ('node', 'node_uuid')]
-
-        self.assertRaises(oscutils.ParserException,
-                          self.check_parser,
-                          self.cmd, arglist, verifylist)
-
     def test_baremetal_inject_nmi_uuid(self):
-        arglist = ['nmi', 'node_uuid']
-        verifylist = [('nmi', 'nmi'), ('node', 'node_uuid')]
+        arglist = ['node_uuid']
+        verifylist = [('node', 'node_uuid')]
 
         parsed_args = self.check_parser(self.cmd, arglist, verifylist)
 
         self.cmd.take_action(parsed_args)
 
         self.baremetal_mock.node.inject_nmi.assert_called_once_with(
-            'nmi', 'node_uuid')
+            'node_uuid')
